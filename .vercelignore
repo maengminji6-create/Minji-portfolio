@@ -1,0 +1,4 @@
+# 사이트에 필요 없는 파일은 배포에서 뺀다 (도구용 가상환경·스크립트)
+.venv
+tools
+requirements.txt

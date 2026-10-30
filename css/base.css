@@ -1,0 +1,243 @@
+/* 공통: 색·글꼴 변수, 리셋, 공통 부품 (docs/DESIGN.md 2·3·6장) */
+:root {
+  /* 바탕 */
+  --bg: #ffffff;
+  --paper: #faf9f6;
+  --line: #ebe9e3;
+  --ink: #26261f;
+  --muted: #72726a;
+  /* 포인트: 줄무늬 폴더에서 뽑은 세 가지 색만 쓴다 */
+  --pink: #f5c8d0;
+  --pink-soft: #fcedf0;
+  --pink-ink: #b8566d;
+  --olive: #7c8a47;
+  --olive-soft: #eef0e4;
+  --olive-ink: #556030;
+  --sage: #a8ab84;
+
+  --shadow: 0 10px 30px -18px rgba(38, 38, 31, .28);
+  --radius: 14px;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+
+  --sans: "Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --hand: "Nanum Pen Script", cursive; /* 테마 프로젝트의 손글씨 메모에만 */
+  --serif: "Gowun Batang", serif;       /* heritage 테마 제목 */
+  --serif-en: "Playfair Display", serif; /* heritage 테마 영문 보조 (이탤릭) */
+
+  --gutter: 16px;
+  --max: 1040px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.7;
+  word-break: keep-all;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+h1, h2, h3, p, ul, ol, dl, dd, figure { margin: 0; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--olive); outline-offset: 3px; border-radius: 4px; }
+::selection { background: var(--pink); }
+
+.wrap { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+.section { padding-top: 64px; padding-bottom: 64px; } /* 좌우는 .wrap 여백 유지 */
+.mono { font-family: var(--mono); letter-spacing: .02em; }
+
+/* 섹션 머리: 번호 + 제목 + 영문 보조 */
+.section-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin-bottom: 24px; }
+.section-no { font-family: var(--mono); font-size: 13px; color: var(--olive); }
+.section-head h2 { font-size: 22px; font-weight: 700; letter-spacing: -.01em; }
+.section-en { font-family: var(--mono); font-size: 12px; color: var(--muted); text-transform: lowercase; }
+
+/* 작은 라벨 */
+.chip {
+  display: inline-flex; align-items: center;
+  height: 26px; padding: 0 10px;
+  border-radius: 999px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  font-size: 13px; line-height: 1; color: var(--ink);
+  white-space: nowrap;
+}
+.chip.pink { background: var(--pink-soft); border-color: transparent; color: var(--pink-ink); }
+.chip.olive { background: var(--olive-soft); border-color: transparent; color: var(--olive-ink); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* 링크 버튼 */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 44px; padding: 0 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  font-size: 15px; font-weight: 600;
+  text-decoration: none;
+  transition: border-color .2s, background .2s, color .2s;
+}
+.btn:hover { border-color: var(--olive); color: var(--olive-ink); }
+.btn.primary { background: var(--olive); border-color: var(--olive); color: #fff; }
+.btn.primary:hover { background: var(--olive-ink); border-color: var(--olive-ink); color: #fff; }
+.btns { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* 항목–값 목록 */
+.spec { display: grid; gap: 0; border-top: 1px solid var(--line); }
+.spec > div { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--line); }
+.spec dt { font-family: var(--mono); font-size: 13px; color: var(--muted); padding-top: 2px; }
+.spec dd { font-size: 15px; font-weight: 500; }
+
+/* 대표 이미지 색 톤: 사진을 올리브 또는 분홍 두 가지 색으로 (필터는 components.js) */
+.tone-olive img { filter: url(#tone-olive); }
+.tone-pink img { filter: url(#tone-pink); }
+.tone-green img { filter: url(#tone-green); }
+.tone-sky img { filter: url(#tone-sky); }
+.tone-cocoa img { filter: url(#tone-cocoa); }
+
+/* 이미지 자리표시 */
+.placeholder {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  width: 100%; height: 100%; min-height: 120px;
+  background: var(--paper);
+  color: #a3a29a;
+  font-size: 13px;
+  text-align: center;
+}
+.placeholder small { font-family: var(--mono); font-size: 11px; color: #bcbbb3; }
+
+/* 줄무늬 폴더 (끝에서 두 번째 레퍼런스): 세이지색 뒷판 + 분홍·올리브 세로 줄무늬 앞판
+   폴더 사이로 cover 이미지가 종이처럼 살짝 나와 있고, 올리면 위로 빠져나옴 */
+.folder {
+  display: grid; justify-items: center; gap: 2px;
+  text-decoration: none; color: var(--ink);
+  -webkit-tap-highlight-color: transparent;
+}
+.folder-icon { position: relative; width: 100%; aspect-ratio: 5 / 4; margin-bottom: 10px; transition: transform .35s var(--ease); }
+.folder-back {
+  position: absolute; inset: 9% 0 0 0;
+  background: var(--sage);
+  border-radius: 0 8px 8px 8px;
+}
+.folder-back::before { /* 왼쪽 위 탭 */
+  content: ""; position: absolute; left: 0; bottom: 100%;
+  width: 42%; height: 11%;
+  background: var(--sage);
+  border-radius: 8px 6px 0 0;
+  clip-path: polygon(0 0, 82% 0, 100% 100%, 0 100%);
+}
+.folder-paper {
+  position: absolute; left: 9%; right: 9%; top: 14%; bottom: 12%;
+  padding: 4px;
+  background: #fff;
+  border-radius: 3px;
+  box-shadow: 0 2px 6px -2px rgba(0, 0, 0, .2);
+  overflow: hidden;
+  transform: rotate(-2deg);
+  transition: transform .45s var(--ease);
+}
+.folder-paper img, .folder-paper .placeholder { width: 100%; height: 100%; object-fit: cover; border-radius: 2px; min-height: 0; }
+.folder-front {
+  position: absolute; left: 0; right: 0; top: 30%; bottom: 0;
+  border-radius: 6px 6px 8px 8px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='120'%3E%3Crect width='30' height='120' fill='%23F5C8D0'/%3E%3Cpath d='M15 0C14 30 17 60 15.5 90S15 120 15 120H28C29 90 27 60 28.5 30S28 0 28 0Z' fill='%237C8A47'/%3E%3C/svg%3E") 0 0 / 22px 88px;
+  box-shadow: 0 -1px 0 rgba(255, 255, 255, .6) inset, 0 -4px 10px -6px rgba(0, 0, 0, .25);
+}
+/* 프로젝트 테마별 폴더 색: 모양은 같고 색만 다르게 */
+.folder-beauty .folder-back, .folder-beauty .folder-back::before { background: #a9cbe0; } /* 연하늘 뒷판 */
+.folder-beauty .folder-front {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='120'%3E%3Crect width='30' height='120' fill='%23FBF1CF'/%3E%3Cpath d='M15 0C14 30 17 60 15.5 90S15 120 15 120H28C29 90 27 60 28.5 30S28 0 28 0Z' fill='%23B9D8EC'/%3E%3C/svg%3E");
+}
+.folder-heritage .folder-back, .folder-heritage .folder-back::before { background: #b08a72; } /* 갈색 뒷판 */
+.folder-heritage .folder-front {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='120'%3E%3Crect width='30' height='120' fill='%23F4CDD3'/%3E%3Cpath d='M15 0C14 30 17 60 15.5 90S15 120 15 120H28C29 90 27 60 28.5 30S28 0 28 0Z' fill='%238A5E46'/%3E%3C/svg%3E");
+}
+.folder-name { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.folder-title { font-size: 17px; font-weight: 700; }
+.folder:hover .folder-icon,
+.folder:focus-visible .folder-icon { transform: translateY(-4px); }
+.folder:hover .folder-paper,
+.folder:focus-visible .folder-paper { transform: translateY(-16%) rotate(1deg); }
+.folder:focus-visible { outline: none; }
+.folder:focus-visible .folder-name { outline: 2px solid var(--olive); outline-offset: 3px; border-radius: 4px; }
+
+/* ---------- 문구류 부품 (theme: "beauty") ----------
+   흰 종이 + 분홍 압정 + 회색 손글씨. 색은 위 팔레트 안에서만 */
+.hand { font-family: var(--hand); font-weight: 400; color: #55554d; line-height: 1.2; }
+
+.pin {
+  position: absolute; top: -8px; left: 50%; z-index: 2;
+  width: 18px; height: 18px; margin-left: -9px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff 0 2px, var(--pink) 3px 60%, #e7a9b6 100%);
+  box-shadow: 0 3px 4px -1px rgba(0, 0, 0, .25);
+}
+
+/* 영수증: 고정폭 글꼴, 이중 점선, 아래 끝 톱니 (그림자는 감싸는 요소에 drop-shadow로) */
+.receipt {
+  display: grid; align-content: start; gap: 0;
+  width: 100%; padding: 26px 18px 34px;
+  border: 0; background: #fffefb; text-align: center;
+  font-family: var(--mono); font-size: 13px; line-height: 1.6; color: var(--ink);
+  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 14px 100%;
+          mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 14px 100%;
+}
+.rc-brand { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: var(--muted); padding-bottom: 8px; }
+.rc-dbl { display: block; height: 5px; margin: 8px 0; border-top: 1px dashed #c9c7bf; border-bottom: 1px dashed #c9c7bf; }
+.rc-title { display: flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--sans); font-size: 15px; font-weight: 700; letter-spacing: .02em; }
+.rc-badge { font-family: var(--hand); font-size: 18px; font-weight: 400; color: var(--pink-ink); }
+.rc-img { display: block; aspect-ratio: 4 / 3; overflow: hidden; background: var(--paper); }
+.rc-img img { width: 100%; height: 100%; object-fit: cover; object-position: top left; }
+.rc-rows { display: grid; gap: 3px; text-align: left; font-family: var(--sans); font-size: 13.5px; color: #45453d; } /* 한글 줄은 본문 글꼴 (고정폭 영문 글꼴엔 한글이 없음) */
+.rc-rows span::before { content: "– "; color: var(--muted); }
+.rc-foot { font-family: var(--sans); font-size: 12px; font-weight: 600; letter-spacing: .04em; color: var(--muted); }
+
+/* 폴라로이드 */
+.polaroid {
+  margin: 0; padding: 9px 9px 0; background: #fff;
+  box-shadow: var(--shadow), 0 0 0 1px rgba(0, 0, 0, .05);
+  transform: rotate(var(--tilt, 0deg));
+}
+.polaroid-img { display: block; aspect-ratio: 4 / 3; overflow: hidden; background: var(--paper); }
+.polaroid-img img { width: 100%; height: 100%; object-fit: cover; object-position: top left; }
+.polaroid figcaption { padding: 6px 0 8px; font-size: 21px; text-align: center; }
+
+/* 링 노트: 왼쪽 링 구멍 */
+.notebook {
+  position: relative; background: #fff;
+  padding: 32px 18px 36px 44px;
+  border: 1px solid var(--line); border-radius: 4px; box-shadow: var(--shadow);
+}
+.notebook::before {
+  content: ""; position: absolute; top: 24px; bottom: 24px; left: 12px; width: 18px;
+  background: radial-gradient(circle at 9px 9px, #fff 0 4px, #bdbbb3 4.5px 6px, transparent 6.5px) 0 0 / 18px 64px repeat-y;
+}
+.notebook::after { /* 링 왼쪽 세로선 */
+  content: ""; position: absolute; top: 0; bottom: 0; left: 36px; width: 1px; background: var(--line);
+}
+
+.arrow { width: 84px; height: 64px; color: #8c8b83; display: block; }
+.arrow.flip { transform: scaleX(-1); }
+
+/* 스크롤하면 떠오르기 */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+.reveal.in { opacity: 1; transform: none; }
+
+@media (min-width: 760px) {
+  .section { padding-top: 96px; padding-bottom: 96px; }
+  .section-head { margin-bottom: 32px; }
+  .section-head h2 { font-size: 26px; }
+  .spec > div { grid-template-columns: 88px minmax(0, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; animation: none !important; }
+  .reveal { opacity: 1; transform: none; }
+}

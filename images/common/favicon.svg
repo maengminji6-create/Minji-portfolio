@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- 줄무늬 폴더 (사이트 폴더 부품과 같은 색: 세이지 뒷판·탭, 분홍·올리브 줄무늬 앞판) -->
+  <defs>
+    <pattern id="s" width="10" height="64" patternUnits="userSpaceOnUse">
+      <rect width="10" height="64" fill="#F5C8D0"/>
+      <rect x="5" width="5" height="64" fill="#7C8A47"/>
+    </pattern>
+    <clipPath id="c"><rect x="4" y="24" width="56" height="34" rx="6"/></clipPath>
+  </defs>
+  <path d="M4 14a5 5 0 0 1 5-5h14l5 5h27a5 5 0 0 1 5 5v34a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z" fill="#A8AB84"/>
+  <rect x="10" y="17" width="44" height="20" rx="2" fill="#fff"/>
+  <g clip-path="url(#c)"><rect x="4" y="24" width="56" height="34" fill="url(#s)"/></g>
+</svg>

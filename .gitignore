@@ -1,0 +1,6 @@
+.DS_Store
+Thumbs.db
+.vscode/
+portfolio-qr.png
+.venv/
+__pycache__/

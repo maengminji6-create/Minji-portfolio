@@ -1,0 +1,2 @@
+Pillow>=11
+qrcode[pil]>=8
