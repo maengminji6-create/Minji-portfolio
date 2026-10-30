@@ -1,5 +1,5 @@
 /* 홈 렌더링: data.js → index.html 각 섹션
-   톤: 밝은 그레이지 바탕 + 큰 검정 글자 위에 오브제(폴더) + 둥근 큰 카드. 모션은 느리고 부드럽게만 */
+   톤: 밝은 그레이지 바탕 + 큰 검정 글자 앞에 떠 있는 유리(글래스모피즘) 카드 + 둥근 큰 카드. 모션은 느리고 부드럽게만 */
 (function () {
   const d = window.PORTFOLIO;
   const pf = d.profile;
@@ -9,7 +9,7 @@
   const role = (p) => (p.spec.find(([k]) => k === "역할") || [])[1] || "";
   const arrowIcon = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
-  // 1. 첫 화면: 왼쪽 작은 메뉴 · 가운데 이름 · 오른쪽 링크 / 큰 글자 위에 폴더 / 번호와 태그
+  // 1. 첫 화면: 왼쪽 작은 메뉴 · 가운데 이름 · 오른쪽 링크 / 큰 글자 앞 유리 카드 / 번호와 태그
   $("cover").innerHTML = `
     <div class="hero-wrap">
       <header class="topbar">
@@ -27,8 +27,16 @@
 
       <div class="stage">
         <h1 class="giant" aria-label="${esc(pf.name)} AX 포트폴리오"><span>AX&nbsp;Archive</span></h1>
-        <nav class="folders" aria-label="프로젝트" style="--n:${projects.length}">
-          ${projects.map(folder).join("")}
+        <span class="glow g1" aria-hidden="true"></span><span class="glow g2" aria-hidden="true"></span>
+        <nav class="glass-cards" aria-label="프로젝트">
+          ${projects.map((p, i) => `
+            <a class="gcard${p.theme ? ` pr-${esc(p.theme)}` : ""}" href="${href(p)}" style="--i:${i}">
+              <span class="gcard-img">${img(p.hero || p.cover, "", { eager: true })}</span>
+              <span class="gcard-top"><span class="mono">/${pad2(p.order)}</span><span class="pill">${esc(p.tab)}</span></span>
+              <b>${esc(p.title)}</b>
+              <span class="gcard-sub">${esc(p.mine.title)}</span>
+              <span class="gcard-go" aria-hidden="true">${arrowIcon}</span>
+            </a>`).join("")}
         </nav>
       </div>
 

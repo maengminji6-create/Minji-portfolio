@@ -20,26 +20,48 @@
 .toplinks a { text-decoration: none; color: var(--muted); }
 .toplinks a:hover, .topnav a:hover { color: var(--ink); }
 
-/* 큰 글자 + 그 위에 놓인 폴더 */
-.stage { position: relative; display: grid; place-items: center; min-height: 0; margin-top: 40px; }
+/* 큰 글자 + 그 아래 은은한 빛 위에 떠 있는 유리 카드 (글자와 겹치지 않음) */
+.stage { position: relative; display: grid; justify-items: center; margin-top: 36px; padding-bottom: 8px; isolation: isolate; }
 .giant {
+  position: relative; z-index: 1;
   margin: 0; width: 100%; text-align: center;
   font-size: 16vw; font-weight: 700; line-height: .9; letter-spacing: -.05em; white-space: nowrap;
   overflow: hidden;
 }
 .giant span { display: inline-block; animation: line-up 1.2s var(--ease) both; }
 @keyframes line-up { from { transform: translateY(105%); } }
-/* 모바일: 큰 글자 아래에 폴더가 살짝 겹쳐 놓임 / PC: 글자 한가운데 위에 오브제처럼 */
-.stage { gap: 0; }
-.folders {
-  position: relative; z-index: 2; margin-top: -6vw;
-  display: grid; grid-template-columns: repeat(var(--n, 2), 130px); gap: 18px;
+.glow { position: absolute; z-index: 0; border-radius: 50%; filter: blur(40px); opacity: .85; animation: drift 14s ease-in-out infinite alternate; }
+.glow.g1 { width: 46%; aspect-ratio: 1; left: 8%; top: 32%; background: #cfe3f0; }
+.glow.g2 { width: 40%; aspect-ratio: 1; right: 8%; top: 40%; background: #f6d7dc; animation-delay: -7s; }
+@keyframes drift { to { transform: translate(6%, -8%) scale(1.08); } }
+
+.glass-cards { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; width: 100%; margin-top: 28px; }
+.gcard {
+  position: relative; display: grid; gap: 4px; align-content: start;
+  padding: 10px 10px 14px; border-radius: 22px;
+  background: rgba(255, 255, 255, .38);
+  -webkit-backdrop-filter: blur(16px) saturate(150%); backdrop-filter: blur(16px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, .7);
+  box-shadow: 0 18px 40px -22px rgba(38, 38, 31, .35), inset 0 1px 0 rgba(255, 255, 255, .8);
+  text-decoration: none; color: var(--ink);
+  animation: float-in 1.4s var(--ease) both; animation-delay: calc(.5s + var(--i) * .15s);
+  transition: transform .6s var(--ease), background .4s;
 }
-.folders .folder-name, .folders .folder-title { display: none; }
-.folders .folder { animation: float-in 1.4s var(--ease) both; animation-delay: calc(.5s + var(--i, 0) * .15s); }
-.folders .folder-icon { animation: float 7s ease-in-out infinite; animation-delay: calc(var(--i, 0) * -2.5s); }
-@keyframes float-in { from { opacity: 0; transform: translateY(30px); } }
-@keyframes float { 50% { transform: translateY(-8px); } }
+.gcard:hover { transform: translateY(-6px); background: rgba(255, 255, 255, .55); }
+.gcard-img { display: block; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 14px; margin-bottom: 8px; background: rgba(255, 255, 255, .5); }
+.gcard-img img { width: 100%; height: 100%; object-fit: cover; object-position: top left; transition: transform 1.2s var(--ease); }
+.gcard:hover .gcard-img img { transform: scale(1.05); }
+.gcard-top { display: flex; justify-content: space-between; align-items: center; gap: 6px; font-size: 11px; padding: 0 4px; }
+.gcard-top .pill { height: 22px; padding: 0 9px; font-size: 11px; background: rgba(255, 255, 255, .5); }
+.gcard b { font-size: 18px; font-weight: 700; letter-spacing: -.02em; padding: 0 4px; }
+.gcard-sub { font-size: 12px; color: #55554d; padding: 0 4px; padding-right: 40px; }
+.gcard-go {
+  position: absolute; right: 10px; bottom: 10px; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%;
+  background: var(--ink); color: #fff;
+}
+.gcard-go svg { width: 15px; height: 15px; transition: transform .45s var(--ease); }
+.gcard:hover .gcard-go svg { transform: rotate(-45deg); }
+@keyframes float-in { from { opacity: 0; transform: translateY(40px); } }
 
 .stage-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-top: 18px; }
 .counter { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--muted); }
@@ -110,7 +132,9 @@
 .round-btn {
   position: absolute; left: 50%; bottom: 22px; translate: -50% 0;
   display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
-  background: #fff; color: var(--ink); box-shadow: 0 4px 14px -6px rgba(0, 0, 0, .25);
+  background: rgba(255, 255, 255, .55); color: var(--ink);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, .8); box-shadow: 0 6px 18px -8px rgba(0, 0, 0, .25);
 }
 .round-btn svg { width: 18px; height: 18px; transform: rotate(-90deg); transition: transform .45s var(--ease); }
 .pcard:hover .pcard-img img { transform: scale(1.04); }
@@ -129,10 +153,14 @@
   .hero-wrap { padding: 26px 34px 34px; }
   .topbar { grid-template-columns: 1fr auto 1fr; }
   .brand { display: block; font-size: 12px; }
-  .stage { min-height: 460px; }
-  .folders { position: absolute; left: 50%; top: 50%; margin: 0; transform: translate(-50%, -42%); }
+  .stage { margin-top: 64px; }
   .giant { font-size: min(15vw, 210px); }
-  .folders { grid-template-columns: repeat(var(--n, 2), 230px); gap: 28px; }
+  .glass-cards { grid-template-columns: repeat(2, 300px); justify-content: center; gap: 40px; margin-top: 48px; }
+  .gcard { padding: 12px 12px 16px; border-radius: 28px; }
+  .gcard:nth-child(1) { rotate: -3deg; }
+  .gcard:nth-child(2) { rotate: 3deg; margin-top: 28px; }
+  .gcard b { font-size: 22px; }
+  .gcard-sub { font-size: 13px; }
 
   .about-grid { grid-template-columns: 1fr 1.3fr; gap: 40px; }
   .lead-text { font-size: 28px; }
