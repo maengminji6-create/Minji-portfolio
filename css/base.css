@@ -1,7 +1,7 @@
 /* 공통: 색·글꼴 변수, 리셋, 공통 부품 (docs/DESIGN.md 2·3·6장) */
 :root {
   /* 바탕 */
-  --bg: #ffffff;
+  --bg: #f3f2ef;   /* 밝은 그레이지 (흰색 계열) */
   --paper: #faf9f6;
   --line: #ebe9e3;
   --ink: #26261f;
@@ -85,8 +85,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--olive); outline
   transition: border-color .2s, background .2s, color .2s;
 }
 .btn:hover { border-color: var(--olive); color: var(--olive-ink); }
-.btn.primary { background: var(--olive); border-color: var(--olive); color: #fff; }
-.btn.primary:hover { background: var(--olive-ink); border-color: var(--olive-ink); color: #fff; }
+.btn.primary { background: var(--ink); border-color: var(--ink); color: #fff; }
+.btn.primary:hover { background: #000; border-color: #000; color: #fff; }
 .btns { display: flex; flex-wrap: wrap; gap: 8px; }
 
 /* 항목–값 목록 */
@@ -226,42 +226,22 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--olive); outline
 .arrow.flip { transform: scaleX(-1); }
 
 /* 스크롤하면 떠오르기 */
-.reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s var(--ease) var(--d, 0s), transform .8s var(--ease) var(--d, 0s); }
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 1.1s var(--ease) var(--d, 0s), transform 1.2s var(--ease) var(--d, 0s); }
 .reveal.in { opacity: 1; transform: none; }
 /* 부채꼴 등장: 기울어진 카드가 아래에서 올라와 제자리로 */
-.reveal.fan { transform: translateY(46px) rotate(var(--fan, -4deg)) scale(.96); transform-origin: 50% 100%; }
+.reveal.fan { transform: translateY(28px); }
 .reveal.fan.in { transform: none; }
-
-/* 타자 커서 */
-.typing::after { content: "_"; margin-left: 2px; animation: caret 1s steps(1) infinite; }
-@keyframes caret { 50% { opacity: 0; } }
-
-/* 마우스 따라 기울기 */
-[data-tilt] { transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .25s var(--ease); will-change: transform; }
 
 /* 읽기 진행 막대 */
 .progress {
-  position: fixed; left: 0; top: 0; right: 0; height: 3px; z-index: 30;
-  background: linear-gradient(90deg, var(--pink), var(--olive)); transform-origin: 0 50%; transform: scaleX(0);
+  position: fixed; left: 0; top: 0; right: 0; height: 2px; z-index: 30;
+  background: var(--ink); transform-origin: 0 50%; transform: scaleX(0);
 }
-
-/* 섹션 제목 밑줄이 그려짐 */
-.section-head h2 { position: relative; }
-.section-head h2::after {
-  content: ""; position: absolute; left: 0; right: 0; bottom: -3px; height: 6px; z-index: -1; border-radius: 3px;
-  background: var(--pink-soft); transform: scaleX(0); transform-origin: 0 50%; transition: transform .8s var(--ease) .25s;
-}
-.section-head.in h2::after { transform: scaleX(1); }
 
 /* 손으로 그린 화살표가 그려짐 */
 .arrow path { stroke-dasharray: 220; stroke-dashoffset: 220; transition: stroke-dashoffset 1.1s var(--ease) .3s; }
 .in .arrow path, .arrow.in path { stroke-dashoffset: 0; }
 
-/* 홈 폴더: 처음 열릴 때 차례로 올라오고, 속 종이가 한 번 들썩 */
-.folder { animation: folder-in .9s var(--ease) backwards; animation-delay: calc(.5s + var(--i, 0) * .15s); }
-.folder-paper { animation: paper-peek 1.4s var(--ease) backwards; animation-delay: calc(1.1s + var(--i, 0) * .15s); }
-@keyframes folder-in { from { opacity: 0; transform: translateY(40px) rotate(calc(var(--i, 0) * 6deg - 3deg)); } }
-@keyframes paper-peek { 40% { transform: translateY(-22%) rotate(2deg); } }
 
 @media (min-width: 760px) {
   .section { padding-top: 96px; padding-bottom: 96px; }
@@ -274,14 +254,12 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--olive); outline
   html { scroll-behavior: auto; }
   * { transition: none !important; animation: none !important; }
   .reveal, .reveal.fan { opacity: 1; transform: none; }
-  .section-head h2::after { transform: scaleX(1); }
   .arrow path { stroke-dashoffset: 0; }
   .progress { display: none; }
-  [data-tilt] { transform: none; }
 }
 
 /* ============================================================
-   무대 연출 공통 (docs/DESIGN.md 6-2)
+   폴더 오브제: 올리면 카드 3장이 천천히 펼쳐짐 (docs/DESIGN.md 6-2)
    ============================================================ */
 
 /* 폴더 속 카드 3장: 평소엔 폴더 안에, 마우스를 올리면(또는 .show) 부채꼴로 솟아오름 */
@@ -292,55 +270,15 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--olive); outline
   padding: 4px; background: #fff; border-radius: 4px;
   box-shadow: 0 10px 22px -10px rgba(38, 38, 31, .4);
   transform: translateY(10%) rotate(0); opacity: 0;
-  transition: transform .7s cubic-bezier(.2, 1.4, .4, 1) calc(var(--k) * 60ms), opacity .3s calc(var(--k) * 60ms);
+  transition: transform .9s var(--ease) calc(var(--k) * 70ms), opacity .6s var(--ease) calc(var(--k) * 70ms);
 }
 .fan-card img, .fan-card .placeholder { width: 100%; height: 100%; object-fit: cover; object-position: top left; border-radius: 2px; min-height: 0; }
-.folder:hover .fan-card, .folder:focus-visible .fan-card, .folders.show .fan-card { opacity: 1; }
-.folder:hover .fan-card:nth-child(1), .folder:focus-visible .fan-card:nth-child(1), .folders.show .fan-card:nth-child(1) { transform: translate(-42%, -58%) rotate(-16deg); }
-.folder:hover .fan-card:nth-child(2), .folder:focus-visible .fan-card:nth-child(2), .folders.show .fan-card:nth-child(2) { transform: translate(0, -78%) rotate(0); }
-.folder:hover .fan-card:nth-child(3), .folder:focus-visible .fan-card:nth-child(3), .folders.show .fan-card:nth-child(3) { transform: translate(42%, -58%) rotate(16deg); }
+.folder:hover .fan-card, .folder:focus-visible .fan-card { opacity: 1; }
+.folder:hover .fan-card:nth-child(1), .folder:focus-visible .fan-card:nth-child(1) { transform: translate(-30%, -52%) rotate(-9deg); }
+.folder:hover .fan-card:nth-child(2), .folder:focus-visible .fan-card:nth-child(2) { transform: translate(0, -66%) rotate(0); }
+.folder:hover .fan-card:nth-child(3), .folder:focus-visible .fan-card:nth-child(3) { transform: translate(30%, -52%) rotate(9deg); }
 /* 앞판이 살짝 젖혀지며 열림 */
 .folder-front { transform-origin: 50% 100%; transition: transform .5s var(--ease); }
-.folder:hover .folder-front, .folder:focus-visible .folder-front, .folders.show .folder-front { transform: rotateX(-28deg); }
-.folder:hover .folder-paper, .folders.show .folder-paper { opacity: 0; }
+.folder:hover .folder-front, .folder:focus-visible .folder-front { transform: rotateX(-18deg); }
+.folder:hover .folder-paper { opacity: 0; }
 
-/* 끝없이 흐르는 띠 */
-.marquee { overflow: hidden; border-block: 1px solid var(--line); background: #fff; padding: 14px 0; }
-.marquee-track { display: flex; width: max-content; gap: 28px; align-items: center; animation: marquee 32s linear infinite; }
-.marquee span { font-size: 26px; font-weight: 800; letter-spacing: -.02em; white-space: nowrap; color: var(--ink); }
-.marquee span:nth-of-type(3n+2) { color: transparent; -webkit-text-stroke: 1.2px var(--ink); }
-.marquee i { font-style: normal; color: var(--pink); font-size: 20px; }
-.marquee.soft { background: var(--paper); }
-.marquee.soft span { font-size: 20px; font-weight: 600; color: var(--muted); -webkit-text-stroke: 0; }
-@keyframes marquee { to { transform: translateX(-50%); } }
-
-/* 한 글자씩 솟아오르기 */
-.split { display: inline-block; }
-.split .ch { display: inline-block; animation: rise .9s cubic-bezier(.2, 1.3, .4, 1) backwards; animation-delay: calc(.15s + var(--c) * .08s); }
-@keyframes rise { from { opacity: 0; transform: translateY(70%) rotate(8deg); } }
-
-/* 따라다니는 커서 */
-.cursor { position: fixed; left: 0; top: 0; z-index: 100; pointer-events: none; width: 0; height: 0; opacity: 0; transition: opacity .3s; }
-.cursor.on { opacity: 1; }
-.cursor span {
-  position: absolute; left: -9px; top: -9px; width: 18px; height: 18px; border-radius: 50%;
-  display: grid; place-items: center;
-  border: 1.5px solid var(--olive); background: transparent;
-  font-size: 0; font-weight: 700; color: #fff; white-space: nowrap;
-  transition: all .35s var(--ease);
-}
-.cursor.big span { left: -34px; top: -34px; width: 68px; height: 68px; background: var(--olive); border-color: var(--olive); font-size: 13px; opacity: .92; }
-
-/* 책상 소품: 처음엔 화면 밖에서 날아와 자리 잡음, 이후 마우스 따라 깊이감 */
-.prop {
-  position: absolute; z-index: 1; pointer-events: none; display: block;
-  translate: var(--mx, 0) var(--my, 0); transition: translate .6s var(--ease);
-  animation: prop-in 1.1s cubic-bezier(.2, 1.2, .4, 1) backwards;
-}
-.prop svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 6px 8px rgba(38, 38, 31, .14)); }
-@keyframes prop-in { from { opacity: 0; transform: translate(var(--fx, 0), var(--fy, -120px)) rotate(var(--fr, 40deg)); } }
-
-@media (prefers-reduced-motion: reduce) {
-  .marquee-track { animation: none !important; }
-  .cursor { display: none; }
-}

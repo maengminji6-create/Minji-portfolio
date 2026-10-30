@@ -30,13 +30,12 @@
         <div class="chips">${chip(p.tab, "olive")}${chip(`내 담당 · ${m.title}`, "pink")}</div>
       </div>
       ${p.hero ? `
-        <div class="p-hero framed" data-scene>${themed ? `<span class="tape l" aria-hidden="true"></span><span class="tape r" aria-hidden="true"></span>` : ""}
+        <div class="p-hero framed">${themed ? `<span class="tape l" aria-hidden="true"></span><span class="tape r" aria-hidden="true"></span>` : ""}
           <div class="frame-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="mono">${esc((p.links.live || p.fileName).replace(/^https?:\/\//, ""))}</span></div>
           <div class="frame-img">${img(p.hero, `${p.title} 대시보드 화면`, { eager: true })}</div>
         </div>`
-        : `<div class="p-hero ${tone(p)}" data-scene>${img(p.cover, `${p.title} 대표 이미지`, { eager: true })}</div>`}
-    </div>
-    ${marquee([p.title, ...p.features.map((f) => f.name), ...p.stack.slice(0, 3)])}`;
+        : `<div class="p-hero ${tone(p)}">${img(p.cover, `${p.title} 대표 이미지`, { eager: true })}</div>`}
+    </div>`;
 
   // 섹션 번호는 그려지는 순서대로 01, 02, ...
   let n = 0;
@@ -310,11 +309,6 @@
   }, { rootMargin: "-45% 0px -50% 0px" });
   navLinks.forEach((a) => { const s = document.querySelector(a.hash); if (s && s.innerHTML) spy.observe(s); else a.hidden = true; });
 
-  splitText(document.querySelector(".p-title-text"));
   reveal();
-  tilt();
   progressBar();
-  scrollScene();
-  cursor();
-  typewrite(document.querySelector("[data-type]"));
 })();
