@@ -94,6 +94,21 @@ function specList(rows) {
   return `<dl class="spec">${rows.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>`;
 }
 
+/** 오른쪽 화살표 아이콘 */
+const arrowIcon = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+/** 유리(글래스모피즘) 프로젝트 카드: 화면 · /번호 · 차수 알약 · 제목 · 내 담당 · 화살표. 뒤에 .glow 빛을 깔면 잘 보임 */
+function glassCard(project, index = 0) {
+  return `
+    <a class="gcard${project.theme ? ` pr-${esc(project.theme)}` : ""}" href="project.html?id=${encodeURIComponent(project.id)}" style="--i:${index}">
+      <span class="gcard-img">${img(project.hero || project.cover, "", { eager: true })}</span>
+      <span class="gcard-top"><span class="mono">/${pad2(project.order)}</span><span class="pill">${esc(project.tab)}</span></span>
+      <b>${esc(project.title)}</b>
+      <span class="gcard-sub">${esc(project.mine.title)}</span>
+      <span class="gcard-go" aria-hidden="true">${arrowIcon}</span>
+    </a>`;
+}
+
 /** 줄무늬 폴더 한 장. 폴더 사이로 cover 이미지가 종이처럼 살짝 나와 있음 */
 function folder(project, index = 0) {
   return `

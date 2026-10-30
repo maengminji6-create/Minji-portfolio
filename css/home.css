@@ -30,38 +30,6 @@
 }
 .giant span { display: inline-block; animation: line-up 1.2s var(--ease) both; }
 @keyframes line-up { from { transform: translateY(105%); } }
-.glow { position: absolute; z-index: 0; border-radius: 50%; filter: blur(40px); opacity: .85; animation: drift 14s ease-in-out infinite alternate; }
-.glow.g1 { width: 46%; aspect-ratio: 1; left: 8%; top: 32%; background: #cfe3f0; }
-.glow.g2 { width: 40%; aspect-ratio: 1; right: 8%; top: 40%; background: #f6d7dc; animation-delay: -7s; }
-@keyframes drift { to { transform: translate(6%, -8%) scale(1.08); } }
-
-.glass-cards { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; width: 100%; margin-top: 28px; }
-.gcard {
-  position: relative; display: grid; gap: 4px; align-content: start;
-  padding: 10px 10px 14px; border-radius: 22px;
-  background: rgba(255, 255, 255, .38);
-  -webkit-backdrop-filter: blur(16px) saturate(150%); backdrop-filter: blur(16px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, .7);
-  box-shadow: 0 18px 40px -22px rgba(38, 38, 31, .35), inset 0 1px 0 rgba(255, 255, 255, .8);
-  text-decoration: none; color: var(--ink);
-  animation: float-in 1.4s var(--ease) both; animation-delay: calc(.5s + var(--i) * .15s);
-  transition: transform .6s var(--ease), background .4s;
-}
-.gcard:hover { transform: translateY(-6px); background: rgba(255, 255, 255, .55); }
-.gcard-img { display: block; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 14px; margin-bottom: 8px; background: rgba(255, 255, 255, .5); }
-.gcard-img img { width: 100%; height: 100%; object-fit: cover; object-position: top left; transition: transform 1.2s var(--ease); }
-.gcard:hover .gcard-img img { transform: scale(1.05); }
-.gcard-top { display: flex; justify-content: space-between; align-items: center; gap: 6px; font-size: 11px; padding: 0 4px; }
-.gcard-top .pill { height: 22px; padding: 0 9px; font-size: 11px; background: rgba(255, 255, 255, .5); }
-.gcard b { font-size: 18px; font-weight: 700; letter-spacing: -.02em; padding: 0 4px; }
-.gcard-sub { font-size: 12px; color: #55554d; padding: 0 4px; padding-right: 40px; }
-.gcard-go {
-  position: absolute; right: 10px; bottom: 10px; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%;
-  background: var(--ink); color: #fff;
-}
-.gcard-go svg { width: 15px; height: 15px; transition: transform .45s var(--ease); }
-.gcard:hover .gcard-go svg { transform: rotate(-45deg); }
-@keyframes float-in { from { opacity: 0; transform: translateY(40px); } }
 
 .stage-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-top: 18px; }
 .counter { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--muted); }

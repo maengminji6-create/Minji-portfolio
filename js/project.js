@@ -199,7 +199,7 @@
               </div>
               <iframe src="${esc(grp.embed)}" title="${esc(grp.title)}" loading="lazy" referrerpolicy="no-referrer"></iframe>
             </div>` : ""}
-          <div class="gallery${grp.shape ? ` shape-${esc(grp.shape)}` : ""}" style="--ratio:${esc(grp.ratio || "16 / 10")}${grp.cols ? `;--cols-d:${+grp.cols}${+grp.cols === 1 ? ";--cols:1" : ""}` : ""}">
+          <div class="gallery${grp.shape ? ` shape-${esc(grp.shape)}` : ""}${(grp.ratio || "16 / 10") === "16 / 10" ? " wide" : ""}" style="--ratio:${esc(grp.ratio || "16 / 10")}${grp.cols ? `;--cols-d:${+grp.cols}${+grp.cols === 1 ? ";--cols:1" : ""}` : ""}">
             ${grp.items.map((g) => g.video ? `
               <figure class="shot is-video reveal fan">
                 <span class="shot-img"><video src="${esc(g.video)}" poster="${esc(g.image)}" controls playsinline preload="none" aria-label="${esc(g.caption)} 영상"></video></span>
@@ -233,7 +233,7 @@
     <div class="wrap section">
       <div class="next reveal">
         <p class="mono">next file</p>
-        <div class="next-folder">${folder(next, 0)}</div>
+        <div class="next-card"><span class="glow g1" aria-hidden="true"></span><span class="glow g2" aria-hidden="true"></span>${glassCard(next, 0)}</div>
       </div>
     </div>` : "";
 
