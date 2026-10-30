@@ -56,7 +56,7 @@
       </div>
     </div>`;
 
-  // 3. 프로젝트: 둥근 큰 카드 (번호 · 태그 · 문구 · 이미지 · 동그란 화살표)
+  // 3. 프로젝트: 첫 화면과 같은 톤 — 흰 판 + 은은한 빛 위 유리 카드 (번호 · 태그 · 문구 · 이미지 · 검정 화살표)
   const card = (p) => `
     <li class="reveal">
       <a class="pcard${p.theme ? ` pr-${esc(p.theme)}` : ""}" href="${href(p)}">
@@ -71,8 +71,11 @@
 
   $("projects").innerHTML = `
     <div class="wrap section">
-      <div class="label reveal"><span class="mono">Projects</span><b>프로젝트</b></div>
-      <ol class="pcards">${projects.map(card).join("")}</ol>
+      <div class="glass-panel">
+        <span class="glow g1" aria-hidden="true"></span><span class="glow g2" aria-hidden="true"></span>
+        <div class="label reveal"><span class="mono">Projects</span><b>프로젝트</b></div>
+        <ol class="pcards">${projects.map(card).join("")}</ol>
+      </div>
     </div>`;
 
   // 4. 연락처
