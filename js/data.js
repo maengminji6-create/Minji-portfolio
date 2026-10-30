@@ -13,10 +13,11 @@ window.PORTFOLIO = {
     nameEn: "Maeng Minji",
     fileName: "maeng_minji.ax_files",
     headline: "현장의 번거로운 업무를 찾아내고, AI로 직접 도구를 만든 AX 프로젝트 기록",
-    intro:
-      "AX마스터 2기에서 두 번의 팀 프로젝트를 진행했습니다. " +
-      "두 번 모두 실제 직무 담당자 한 사람을 정해 그 사람의 하루를 따라가며 반복 업무를 찾고, " +
-      "기능을 탭 단위로 나눠 명세를 쓴 뒤 AI 코딩 도구로 만들어 배포했습니다.",
+    // 소개: 문단 배열. 아래에 프로젝트별 한 줄(내 역할)이 자동으로 붙음
+    intro: [
+      "현장에서 반복되는 번거로운 일을 찾아내고, 그 일을 덜어 줄 도구를 AI로 직접 기획하고 만드는 맹민지입니다.",
+      "KITA AX마스터 2기에서 두 번의 팀 프로젝트를 모두 팀장으로 이끌었습니다. 매번 실제 직무 담당자 한 사람의 하루를 따라가며 문제를 찾고, 기능 명세를 먼저 쓴 뒤 AI 코딩 도구로 개발해 배포까지 마쳤습니다.",
+    ],
     email: "maengminji6@gmail.com",
     github: "https://github.com/kimminniegu",
     resume: "", // "images/common/resume.pdf"

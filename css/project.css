@@ -359,21 +359,6 @@ section[id], #p-next { scroll-margin-top: 56px; }
 .mn-note { font-size: 24px; max-width: 22em; }
 .mn-arrow { display: flex; justify-content: center; }
 
-/* 기능: 압정으로 꽂은 영수증 */
-/* 모바일: 영수증을 옆으로 넘겨 보기 (페이지 가로 스크롤은 생기지 않음) */
-.theme-beauty .features {
-  flex-wrap: nowrap; justify-content: flex-start; gap: 16px;
-  overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none;
-  margin: 0 calc(var(--gutter) * -1); padding: 16px var(--gutter) 24px; scroll-padding: 0 var(--gutter);
-}
-.theme-beauty .features::-webkit-scrollbar { display: none; }
-.theme-beauty .features > li { flex: 0 0 74%; width: auto; scroll-snap-align: start; }
-.receipt-wrap { position: relative; filter: drop-shadow(0 0 .5px rgba(0, 0, 0, .2)) drop-shadow(0 10px 14px rgba(0, 0, 0, .07)); }
-.feature-receipt { cursor: zoom-in; transform: rotate(var(--tilt, 0deg)); transition: transform .35s var(--ease); }
-.feature-receipt:hover, .feature-receipt:focus-visible { transform: rotate(0) translateY(-4px); }
-.feature-receipt.is-mine .rc-title { color: var(--pink-ink); }
-.receipt-wrap .pin { top: -6px; }
-
 @media (min-width: 760px) {
   .story-book { padding: 44px 48px 48px 84px; }
   .story-book::before { left: 26px; }
@@ -387,144 +372,85 @@ section[id], #p-next { scroll-margin-top: 56px; }
   .mn.right { justify-items: end; text-align: right; }
   .mn.right .mn-note { justify-self: end; }
   .mn-arrow svg { transform: rotate(-60deg); }
-  .theme-beauty .features { flex-wrap: wrap; justify-content: center; overflow: visible; margin: 0; padding: 12px 0 0; --gap: 28px; gap: 48px var(--gap); }
-  .theme-beauty .features > li { flex: 0 0 auto; width: calc((100% - 2 * var(--gap)) / 3); }
 }
 
-/* ---------- beauty 테마: 페이지 전체 톤 맞추기 ----------
-   포인트 색을 올리브 → 로즈로 (COSMOA 화장품 콘셉트), 나머지 팔레트는 그대로 */
+/* ============================================================
+   프로젝트 테마: 뼈대(글꼴·카드·간격·부품)는 두 프로젝트가 같고, 바뀌는 것은 '색'과 '포인트 장식 하나'뿐
+   - 색은 홈 폴더 배색과 같게: beauty(COSMOA) 연하늘·크림 노랑 / heritage(한정선) 분홍·갈색
+   - 장식: 공통 = 커버 마스킹테이프 + 제목 옆 스티커 + 연한 종이색 카드
+           beauty = 링 노트 스토리·폴라로이드 메모 / heritage = 아치 틀 영상·포스터
+   ============================================================ */
 .theme-beauty {
-  --olive: #b8667a;
-  --olive-ink: #8e4558;
-  --olive-soft: #f9eaee;
+  --olive: #4f84a8; --olive-ink: #35617f; --olive-soft: #e8f2f9;   /* 포인트: 하늘 */
+  --pink: #f3dc8c;  --pink-soft: #fdf7e2; --pink-ink: #9a7417;    /* 강조(내 담당·결과): 크림 노랑 */
+  --tint: #f7fbfd; --tint-line: #dcebf4; --tape-a: rgba(185, 216, 236, .8); --tape-b: rgba(251, 241, 207, .9);
 }
-.theme-beauty ::selection { background: var(--pink-soft); }
+.theme-heritage {
+  --olive: #8a5e46; --olive-ink: #6b4532; --olive-soft: #f5ebe4;   /* 포인트: 갈색 */
+  --pink: #f0bcc5;  --pink-soft: #fcedef; --pink-ink: #b0566a;    /* 강조(내 담당·결과): 분홍 */
+  --tint: #fdf8f6; --tint-line: #f0e1dc; --tape-a: rgba(244, 205, 211, .85); --tape-b: rgba(176, 138, 114, .5);
+}
+[class*="theme-"] ::selection { background: var(--pink-soft); }
 
-/* 섹션 머리: 영문 보조를 손글씨로 */
-.theme-beauty .section-en { font-family: var(--hand); font-size: 24px; color: var(--pink-ink); text-transform: none; letter-spacing: 0; }
-
-/* 커버: 제목 옆 손글씨 스티커, 대시보드 캡처는 마스킹테이프로 붙인 느낌 */
+/* 커버: 제목 옆 스티커 (두 프로젝트 같은 모양, 글자만 다름) */
 .p-sticker {
-  display: inline-block; margin-left: 12px; padding: 2px 14px 4px; vertical-align: middle;
-  font-size: .5em; font-weight: 400; color: var(--pink-ink);
-  background: var(--pink-soft); border-radius: 999px; transform: rotate(-6deg);
-  box-shadow: 0 2px 6px -3px rgba(0, 0, 0, .25);
+  display: inline-block; margin-left: 12px; padding: 4px 14px; vertical-align: middle;
+  font-size: .32em; font-weight: 700; letter-spacing: .02em; color: var(--pink-ink);
+  background: var(--pink-soft); border: 1.5px solid var(--pink); border-radius: 999px; transform: rotate(-5deg);
 }
-.p-hero.taped { overflow: visible; transform: rotate(-.4deg); }
-.p-hero.taped .frame-bar { border-radius: var(--radius) var(--radius) 0 0; }
-.p-hero.taped .frame-img { border-radius: 0 0 var(--radius) var(--radius); }
+.p-sticker.hand { font-family: var(--hand); font-weight: 400; font-size: .5em; padding: 0 16px 2px; }
+/* 커버 캡처: 연한 종이 매트 + 마스킹테이프 */
+[class*="theme-"] .p-hero.framed { overflow: visible; padding: 10px; background: var(--tint); border-color: var(--tint-line); }
+[class*="theme-"] .p-hero.framed .frame-bar { background: #fff; border: 1px solid var(--tint-line); border-bottom: 0; border-radius: 8px 8px 0 0; }
+[class*="theme-"] .p-hero.framed .frame-img { border: 1px solid var(--tint-line); border-radius: 0 0 8px 8px; }
 .tape {
-  position: absolute; top: -12px; z-index: 2; width: 96px; height: 26px;
-  background: rgba(245, 200, 208, .75);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, .06);
+  position: absolute; top: -12px; z-index: 2; width: 96px; height: 26px; background: var(--tape-a);
   -webkit-mask: linear-gradient(90deg, transparent 0 2px, #000 2px calc(100% - 2px), transparent 0);
 }
 .tape.l { left: 24px; transform: rotate(-8deg); }
-.tape.r { right: 24px; transform: rotate(7deg); background: rgba(168, 171, 132, .55); }
+.tape.r { right: 24px; transform: rotate(7deg); background: var(--tape-b); }
 
-/* 한눈에 보기: 마인드맵을 라벨 스티커처럼 */
-.theme-beauty .mm-center { background: var(--pink-soft); color: var(--ink); border: 1.5px dashed var(--pink-ink); }
-.theme-beauty .mm-center .mono { color: var(--pink-ink); opacity: 1; }
-.theme-beauty .mm-node { border-style: dashed; border-color: #e3d6d9; }
-.theme-beauty .mm-node::before, .theme-beauty .mindmap::before { background: #ecd4da; }
-.theme-beauty .mm-role { background: var(--pink-soft); }
+/* 카드류: 같은 모양, 연한 종이색 + 테마 선 */
+[class*="theme-"] .mm-node, [class*="theme-"] .flow-card { background: var(--tint); border-color: var(--tint-line); }
+[class*="theme-"] .mm-role, [class*="theme-"] .flow-card.result { background: var(--pink-soft); }
+[class*="theme-"] .mm-node::before, [class*="theme-"] .mindmap::before { background: var(--tint-line); }
+[class*="theme-"] .map-grid .spec { padding: 6px 20px; border: 1px solid var(--tint-line); border-top: 3px solid var(--olive); border-radius: 4px 4px 14px 14px; background: var(--tint); }
+[class*="theme-"] .map-grid .spec > div:last-child { border-bottom: 0; }
+[class*="theme-"] .flow-card { border-top: 3px solid var(--olive); border-radius: 4px 4px var(--radius) var(--radius); }
+[class*="theme-"] .flow-card.result { border-top-color: var(--pink-ink); }
+[class*="theme-"] .flow-card li::before { background: var(--olive); }
+[class*="theme-"] .solutions, [class*="theme-"] .sol-row { border-color: var(--tint-line); }
+[class*="theme-"] .sol-head { background: var(--tint); }
+[class*="theme-"] .timeline li::before { border-color: var(--olive); }
+[class*="theme-"] .timeline li:last-child::before { background: var(--pink); border-color: var(--pink-ink); }
+[class*="theme-"] .mine { background: linear-gradient(#fff, var(--tint)); border-color: var(--tint-line); }
+[class*="theme-"] .lead { background: var(--pink-soft); }
+[class*="theme-"] .formulas code { background: #fff; border: 1px solid var(--tint-line); }
+[class*="theme-"] .feature { border-color: var(--tint-line); }
+[class*="theme-"] .feature-img { border-color: var(--tint-line); background: var(--tint); }
+[class*="theme-"] .feature.is-mine, [class*="theme-"] .feature.is-mine:hover { border-color: var(--pink-ink); box-shadow: 0 0 0 1px var(--pink-ink); }
+[class*="theme-"] .chip:not(.pink):not(.olive) { border-color: var(--tint-line); background: var(--tint); }
+[class*="theme-"] .shot-img, [class*="theme-"] .embed { border-color: var(--tint-line); }
+[class*="theme-"] .embed .frame-bar { background: var(--tint); }
+/* 링 노트·폴라로이드(beauty 장식)도 테마 색으로 */
+.theme-beauty .story-book { border-color: var(--tint-line); }
+.theme-beauty .nb-note { color: var(--pink-ink); }
+.theme-beauty .nb-step.result .nb-note::before { border-color: var(--pink-ink); }
 
-/* 작업 명세서 영수증 */
-.spec-receipt { max-width: 340px; width: 100%; justify-self: center; transform: rotate(1.2deg); }
-.rc-spec { display: grid; gap: 4px; text-align: left; }
-.rc-spec > span { display: flex; align-items: baseline; gap: 8px; font-family: var(--sans); font-size: 13.5px; }
-.rc-spec i { flex: none; width: 48px; font-style: normal; color: var(--muted); font-size: 12.5px; }
-.rc-spec b { flex: 1; font-weight: 600; text-align: right; }
+/* heritage 장식: 세로 영상·포스터는 아치 틀 */
+.gallery.shape-arch .shot-img { border-radius: 999px 999px 10px 10px; }
 
-/* 진행 과정: 점을 분홍으로 */
-.theme-beauty .timeline li::before { border-color: var(--pink); }
-.theme-beauty .timeline .mono { color: var(--pink-ink); }
-
-/* 내가 맡은 부분: 연분홍 종이 */
-.theme-beauty .mine { background: linear-gradient(#fff, #fffafb); border-color: #efe2e5; }
-.theme-beauty .lead { background: var(--pink-soft); }
-
-/* 결과물: 폴라로이드 + 손글씨 캡션 */
-.theme-beauty .shot-img { padding: 8px 8px 0; background: #fff; border: 0; border-radius: 2px; box-shadow: var(--shadow), 0 0 0 1px rgba(0, 0, 0, .05); }
-.theme-beauty .shot-img img { border-radius: 1px; }
-.theme-beauty .shot:nth-child(odd) .shot-img { transform: rotate(-1.2deg); }
-.theme-beauty .shot:nth-child(even) .shot-img { transform: rotate(1deg); }
-.theme-beauty .shot-cap { font-family: var(--hand); font-size: 22px; font-weight: 400; color: #55554d; }
-
-/* ============================================================
-   테마: heritage (한정선 · 전통 디저트 브랜드)
-   크림 종이 + 짙은 초록 + 골드 브라운, 명조 제목, 붉은 낙관, 아치 틀 (브랜드 포트폴리오 PDF 톤)
-   ============================================================ */
-.theme-heritage {
-  --olive: #3d5a4b;       /* 포인트: 짙은 초록 */
-  --olive-ink: #2c4438;
-  --olive-soft: #e9eee8;
-  --pink: #e3d3b4;        /* 강조(내 담당·결과): 골드 브라운 계열 */
-  --pink-soft: #f6efe2;
-  --pink-ink: #8a5a2b;
-  --cream: #faf6ee;
-  --cream-line: #ebe2cf;
+/* ---------- 무대 연출 (상세) ---------- */
+/* 커버 캡처: 스크롤하면 노트북 화면이 열리듯 세워짐 (--p: 0 → 1, js/components.js scrollScene) */
+.p-hero[data-scene] {
+  transform-origin: 50% 100%;
+  transform: perspective(1400px) rotateX(calc((1 - var(--p, 1)) * 32deg)) scale(calc(.88 + var(--p, 1) * .12));
+  will-change: transform;
 }
-.theme-heritage ::selection { background: var(--pink); }
-
-/* 제목은 명조, 영문 보조는 이탤릭 */
-.theme-heritage .p-title,
-.theme-heritage .section-head h2,
-.theme-heritage .mm-center b,
-.theme-heritage .flow-card h3,
-.theme-heritage .mine-head h3,
-.theme-heritage .feature-name,
-.theme-heritage .gallery-head h3,
-.theme-heritage .fm-text h3 { font-family: var(--serif); font-weight: 700; letter-spacing: -.01em; }
-.theme-heritage .p-title { color: var(--olive-ink); }
-.theme-heritage .section-en { font-family: var(--serif-en); font-style: italic; font-size: 18px; color: var(--olive); text-transform: none; letter-spacing: 0; }
-.theme-heritage .section-no, .theme-heritage .p-no { color: var(--pink-ink); }
-
-/* 제목 옆 붉은 낙관 */
-.theme-heritage .p-sticker {
-  display: inline-block; margin-left: 14px; padding: 4px 6px; vertical-align: middle;
-  writing-mode: vertical-rl; font-family: var(--serif); font-size: .3em; font-weight: 700; line-height: 1.05; letter-spacing: .08em;
-  color: #a23a2a; border: 2px solid #a23a2a; border-radius: 4px; background: #fffaf6; transform: rotate(-4deg);
-}
-
-/* 커버 캡처: 크림 매트 */
-.theme-heritage .p-hero.framed { padding: 10px; background: var(--cream); border-color: var(--cream-line); }
-.theme-heritage .p-hero.framed .frame-bar { background: #fff; border: 1px solid var(--cream-line); border-bottom: 0; border-radius: 8px 8px 0 0; }
-.theme-heritage .p-hero.framed .frame-img { border: 1px solid var(--cream-line); border-radius: 0 0 8px 8px; }
-
-/* 마인드맵·명세: 크림 카드 */
-.theme-heritage .mm-center { background: var(--olive); }
-.theme-heritage .mm-node { background: var(--cream); border-color: var(--cream-line); }
-.theme-heritage .mm-role { background: var(--pink-soft); }
-.theme-heritage .mm-node::before, .theme-heritage .mindmap::before { background: var(--cream-line); }
-.theme-heritage .map-grid .spec { padding: 6px 20px; border: 1px solid var(--cream-line); border-top: 3px solid var(--olive); border-radius: 4px 4px 14px 14px; background: var(--cream); }
-.theme-heritage .map-grid .spec > div:last-child { border-bottom: 0; }
-
-/* 스토리 카드: 위쪽 초록 띠 */
-.theme-heritage .flow-card { background: var(--cream); border-top: 3px solid var(--olive); border-radius: 4px 4px var(--radius) var(--radius); }
-.theme-heritage .flow-card.result { background: var(--pink-soft); border-top-color: var(--pink-ink); }
-.theme-heritage .flow-label { font-family: var(--serif-en); font-style: italic; font-size: 15px; }
-.theme-heritage .flow-card li::before { background: var(--olive); }
-.theme-heritage .solutions { border-color: var(--cream-line); }
-.theme-heritage .sol-head { background: var(--cream); }
-.theme-heritage .sol-row { border-color: var(--cream-line); }
-
-/* 진행 과정 */
-.theme-heritage .timeline li::before { border-color: var(--olive); }
-.theme-heritage .timeline li:last-child::before { background: var(--pink-ink); border-color: var(--pink-ink); }
-
-/* 내가 맡은 부분 */
-.theme-heritage .mine { background: linear-gradient(#fff, var(--cream)); border-color: var(--cream-line); }
-.theme-heritage .formulas code { background: #fff; border: 1px solid var(--cream-line); }
-
-/* 기능 카드 */
-.theme-heritage .feature { background: #fffdf8; border-color: var(--cream-line); }
-.theme-heritage .feature-img { border-color: var(--cream-line); }
-.theme-heritage .feature.is-mine, .theme-heritage .feature.is-mine:hover { border-color: var(--pink-ink); box-shadow: 0 0 0 1px var(--pink-ink); }
-.theme-heritage .chip { border-color: var(--cream-line); background: var(--cream); }
-
-/* 결과물: 세로 사진·영상은 아치 틀 (브랜드 포트폴리오 PROMOTION 구성) */
-.gallery.shape-arch .shot-img { border-radius: 999px 999px 10px 10px; border-color: var(--cream-line); }
-.theme-heritage .shot-cap { font-family: var(--serif); }
-.theme-heritage .embed { border-color: var(--cream-line); }
-.theme-heritage .embed .frame-bar { background: var(--cream); }
+#p-cover .marquee { margin-top: 56px; }
+.p-title-text { display: inline-block; }
+.p-title .split .ch { animation-delay: calc(.1s + var(--c) * .05s); }
+/* 결과물·기능 카드: 올리면 살짝 들림 */
+.shot .shot-img { transition: transform .5s var(--ease), box-shadow .5s var(--ease); }
+.shot:hover .shot-img { transform: translateY(-6px) rotate(-1deg); box-shadow: 0 18px 30px -18px rgba(38, 38, 31, .4); }
+@media (min-width: 760px) { #p-cover .marquee { margin-top: 80px; } }

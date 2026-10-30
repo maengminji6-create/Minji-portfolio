@@ -10,10 +10,10 @@
   const p = projects[index];
   const next = projects[(index + 1) % projects.length];
   const m = p.mine;
-  // 테마 프로젝트(예: 화장품 → beauty)는 문구류 스타일: 영수증 기능 카드, 링 노트 스토리, 폴라로이드 메모
+  // 테마 프로젝트: 뼈대는 같고 색·장식만 다름 (css/project.css 테마 블록)
   const themed = !!p.theme;
   if (themed) document.body.classList.add(`theme-${p.theme}`);
-  const beauty = p.theme === "beauty"; // 영수증·링 노트·폴라로이드 마크업은 beauty 테마에서만
+  const beauty = p.theme === "beauty"; // 링 노트 스토리·폴라로이드 메모는 beauty 테마에서만
 
   document.title = `${p.title} | ${d.profile.name} AX 포트폴리오`;
 
@@ -22,20 +22,21 @@
     <div class="wrap">
       <div class="p-intro">
         <div class="p-meta">
-          <span class="p-no mono">${esc(p.fileName)}</span>
+          <span class="p-no mono" data-type="${esc(p.fileName)}">${esc(p.fileName)}</span>
           ${p.logo ? `<img class="p-logo" src="${esc(p.logo)}" alt="${esc(p.title)} 로고">` : ""}
         </div>
-        <h1 class="p-title">${esc(p.title)}${themed && p.sticker ? `<span class="p-sticker${beauty ? " hand" : ""}">${esc(p.sticker)}</span>` : ""}</h1>
+        <h1 class="p-title"><span class="p-title-text">${esc(p.title)}</span>${themed && p.sticker ? `<span class="p-sticker${beauty ? " hand" : ""}">${esc(p.sticker)}</span>` : ""}</h1>
         <p class="p-sub">${esc(p.subtitle)}</p>
         <div class="chips">${chip(p.tab, "olive")}${chip(`내 담당 · ${m.title}`, "pink")}</div>
       </div>
       ${p.hero ? `
-        <div class="p-hero framed${beauty ? " taped" : ""}">${beauty ? `<span class="tape l" aria-hidden="true"></span><span class="tape r" aria-hidden="true"></span>` : ""}
+        <div class="p-hero framed" data-scene>${themed ? `<span class="tape l" aria-hidden="true"></span><span class="tape r" aria-hidden="true"></span>` : ""}
           <div class="frame-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="mono">${esc((p.links.live || p.fileName).replace(/^https?:\/\//, ""))}</span></div>
           <div class="frame-img">${img(p.hero, `${p.title} 대시보드 화면`, { eager: true })}</div>
         </div>`
-        : `<div class="p-hero ${tone(p)}">${img(p.cover, `${p.title} 대표 이미지`, { eager: true })}</div>`}
-    </div>`;
+        : `<div class="p-hero ${tone(p)}" data-scene>${img(p.cover, `${p.title} 대표 이미지`, { eager: true })}</div>`}
+    </div>
+    ${marquee([p.title, ...p.features.map((f) => f.name), ...p.stack.slice(0, 3)])}`;
 
   // 섹션 번호는 그려지는 순서대로 01, 02, ...
   let n = 0;
@@ -64,17 +65,7 @@
           ${node("mm-stack", "기술", `<p>${p.stack.slice(0, 4).map(esc).join(" · ")}</p>`)}
           ${node("mm-result", "결과", `<p>${esc(p.flow[p.flow.length - 1].title)}</p>`)}
         </div>
-        ${beauty ? `
-          <div class="reveal receipt-wrap spec-receipt">
-            ${pin()}
-            <div class="receipt">
-              <span class="rc-brand">${esc(p.title)}</span><span class="rc-dbl"></span>
-              <span class="rc-title">작업 명세서</span><span class="rc-dbl"></span>
-              <span class="rc-spec">${p.spec.map(([k, v]) => `<span><i>${esc(k)}</i><b>${esc(v)}</b></span>`).join("")}</span>
-              <span class="rc-dbl"></span>
-              <span class="rc-foot">FILE NO. ${pad2(p.order)} · THANK YOU</span>
-            </div>
-          </div>` : `<div class="reveal">${specList(p.spec)}</div>`}
+        <div class="reveal">${specList(p.spec)}</div>
       </div>
     </div>`;
 
@@ -98,7 +89,7 @@
         </div>` : `
       <ol class="flow">
         ${p.flow.map((f, i) => `
-          <li class="flow-card${i === p.flow.length - 1 ? " result" : ""} reveal">
+          <li class="flow-card${i === p.flow.length - 1 ? " result" : ""} reveal fan">
             <span class="flow-label mono">${pad2(i + 1)} ${esc(f.label)}</span>
             <h3>${esc(f.title)}</h3>
             <ul>${f.points.map((t) => `<li>${keyLine(t)}</li>`).join("")}</ul>
@@ -171,15 +162,9 @@
     <div class="wrap section">
       ${sectionHead(no(), `기능 ${p.features.length}가지`, "features")}
       <ul class="features${p.features.length % 3 === 2 ? " top2" : ""}">
-        ${p.features.map((f, i) => beauty ? `
-          <li class="reveal receipt-wrap" style="--tilt:${[-1.2, 0.8, -0.4, 1, -0.8, 0.5][i % 6]}deg">
-            ${pin()}
-            <button class="receipt feature-receipt${f.mine ? " is-mine" : ""}" type="button" data-feature="${i}" aria-label="${esc(f.name)} 자세히 보기">
-              ${receipt({ brand: p.title, title: f.name, badge: f.mine ? "내 담당!" : "", image: f.image, items: f.items, foot: f.more?.length ? `화면 ${f.more.length + 1}장 · 자세히 보기 →` : "자세히 보기 →" })}
-            </button>
-          </li>` : `
-          <li class="reveal">
-            <button class="feature${f.mine ? " is-mine" : ""}" type="button" data-feature="${i}" aria-label="${esc(f.name)} 자세히 보기">
+        ${p.features.map((f, i) => `
+          <li class="reveal fan">
+            <button class="feature${f.mine ? " is-mine" : ""}" type="button" data-feature="${i}" data-cursor="보기" aria-label="${esc(f.name)} 자세히 보기">
               <span class="feature-img">${img(f.image, `${f.name} 화면`)}${f.more?.length ? `<span class="feature-count mono">+${f.more.length}</span>` : ""}</span>
               <span class="feature-text">
                 <span class="feature-name">${esc(f.name)}${f.mine ? chip("내 담당", "pink") : ""}</span>
@@ -217,11 +202,11 @@
             </div>` : ""}
           <div class="gallery${grp.shape ? ` shape-${esc(grp.shape)}` : ""}" style="--ratio:${esc(grp.ratio || "16 / 10")}${grp.cols ? `;--cols-d:${+grp.cols}${+grp.cols === 1 ? ";--cols:1" : ""}` : ""}">
             ${grp.items.map((g) => g.video ? `
-              <figure class="shot is-video reveal">
+              <figure class="shot is-video reveal fan">
                 <span class="shot-img"><video src="${esc(g.video)}" poster="${esc(g.image)}" controls playsinline preload="none" aria-label="${esc(g.caption)} 영상"></video></span>
                 <figcaption><span class="shot-cap">${esc(g.caption)}</span>${g.note ? `<span class="shot-note">${esc(g.note)}</span>` : ""}</figcaption>
               </figure>` : `
-              <button class="shot reveal" type="button" data-zoom="${esc(g.image)}" data-caption="${esc(g.caption)}" aria-label="${esc(g.caption)} 크게 보기">
+              <button class="shot reveal fan" type="button" data-zoom="${esc(g.image)}" data-caption="${esc(g.caption)}" aria-label="${esc(g.caption)} 크게 보기">
                 <span class="shot-img">${img(g.image, g.caption)}</span>
                 <span class="shot-cap">${esc(g.caption)}</span>
                 ${g.note ? `<span class="shot-note">${esc(g.note)}</span>` : ""}
@@ -325,5 +310,11 @@
   }, { rootMargin: "-45% 0px -50% 0px" });
   navLinks.forEach((a) => { const s = document.querySelector(a.hash); if (s && s.innerHTML) spy.observe(s); else a.hidden = true; });
 
+  splitText(document.querySelector(".p-title-text"));
   reveal();
+  tilt();
+  progressBar();
+  scrollScene();
+  cursor();
+  typewrite(document.querySelector("[data-type]"));
 })();
